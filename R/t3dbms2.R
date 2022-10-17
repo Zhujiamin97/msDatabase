@@ -48,7 +48,7 @@ get_t3db <- function(page_num=c("45"),name=c("pollutant"),sleep_time=c("2")){
   close(pb)
   dir.create("./T3DB")
   write.csv(t3db_data,"./T3DB/name.csv")
-  message("获取完成，已保存到默认路径")
+  message("物质信息获取完成，已保存到默认路径")
   #获取二级数据的url
   t3dbid <- t3db_data$t3dbid
   #pb <- txtProgressBar(0, length(t3dbid), style = 3)
