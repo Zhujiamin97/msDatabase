@@ -47,7 +47,7 @@ get_t3db <- function(page_num=c("45"),name=c("pollutant"),sleep_time=c("2")){
 
   close(pb)
   dir.create("./T3DB")
-  write.csv(t3db_data,"./T3DB/污染物.csv")
+  write.csv(t3db_data,"./T3DB/name.csv")
   message("获取完成，已保存到默认路径")
   #获取二级数据的url
   t3dbid <- t3db_data$t3dbid
@@ -186,7 +186,7 @@ get_t3db <- function(page_num=c("45"),name=c("pollutant"),sleep_time=c("2")){
   }) %>% do.call(rbind,.)
   #close(pb)
   message("全部数据获取完成")
-  write.csv(t3d_info,"./T3DB/t3dbms2.csv")
-  save(t3d_info,file = "./T3DB/t3dbms2.Rdata")
+  write.csv(t3d_info,"./T3DB/t3dbms2_name.csv")
+  save(t3d_info,file = "./T3DB/t3dbms2_name.Rdata")
   ms2_info
 }
