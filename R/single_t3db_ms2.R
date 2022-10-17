@@ -1,7 +1,6 @@
 #查询单个物质信息
 single_t3db <- function(id=c("T3D0001")){
   t3dbid <- id
-  t3dbid <- t3db_data$t3dbid
   #pb <- txtProgressBar(0, length(t3dbid), style = 3)
   t3d_info <- lapply(1:length(t3dbid), function(x){
     #setTxtProgressBar(pb, x)
