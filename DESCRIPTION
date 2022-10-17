@@ -1,0 +1,17 @@
+Package: t3dbms2
+Type: Package
+Title: Obtain substance information in the T3DB database
+Version: 0.1.0
+Author: ZHU
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    curl,
+    rvest
+Depends: 
+    tidyverse
+RoxygenNote: 7.2.1
