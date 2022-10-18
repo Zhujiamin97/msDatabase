@@ -5,7 +5,7 @@ You can install t3dbms2 from Github
 if(!require(remotes)){
 install.packages("remotes")
 }
-remotes::install_gitlab("Zhujiamin/t3dbms2")
+remotes::install_github("Zhujiamin/t3dbms2")
 
 # Usage
 get_t3db(page_num,name,sleep_time)
