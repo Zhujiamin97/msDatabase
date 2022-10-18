@@ -1,5 +1,6 @@
-#查询单个物质信息
-single_t3db <- function(id=c("T3D0001",sleep_time=c("2")){
+#查询单个或多个物质信息，通过输入T3Did
+#多个请以c("T3D0001","T3D0002","T3D0003")形式输入
+single_t3db <- function(id=c("T3D0001"),sleep_time=c("2")){
   t3dbid <- id
   #pb <- txtProgressBar(0, length(t3dbid), style = 3)
   t3d_info <- lapply(1:length(t3dbid), function(x){
@@ -10,10 +11,8 @@ single_t3db <- function(id=c("T3D0001",sleep_time=c("2")){
     info_1 <- paste0(t3dbid[x],"#spectra")
     new_url_1 <- paste0(url_1,info_1)
     ##获取html网页
-    #System.time()  #中间放进去的时间单位为秒
-
+    #System.time() 
     web <- read_html(curl(new_url_1,handle = curl::new_handle("useragent" = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.33")))
-
     # web <- read_html(new_url_1)
     ##提取文档中指定元素,提取二级谱图对应的序列号
     news <- web %>% html_nodes("tr td tbody tr td")
