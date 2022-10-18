@@ -29,7 +29,7 @@ single_t3db <- function(id=c("T3D0001"),sleep_time=c("2")){
         }
       })
     }
-    ##去除ms2_num中为NA的项
+    ##去除ms2_num中为N的项
     if(length(which(ms2_num=="NULL"))>0){
       ms2_num <- ms2_num[-which(ms2_num=="NULL")]  ##500问题所在 因为网页确实无法打开
     }else{
