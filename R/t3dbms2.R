@@ -188,5 +188,5 @@ get_t3db <- function(page_num=c("45"),name=c("pollutant"),sleep_time=c("2")){
   message("全部数据获取完成")
   write.csv(t3d_info,"./T3DB/t3dbms2_name.csv")
   save(t3d_info,file = "./T3DB/t3dbms2_name.Rdata")
-  ms2_info
+  info_final
 }
