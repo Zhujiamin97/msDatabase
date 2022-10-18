@@ -14,6 +14,9 @@ page_num:The number of pages you want to crawl
 name:The class of substance, such as "pollutant"
 sleep_time:The time between each acquisition of data
 
+![image](https://user-images.githubusercontent.com/93595586/196357074-4fee4e08-b667-451f-9cb5-5b90cbc4cc04.png)
+
+
 # other
 There will be problems, improvement
 
