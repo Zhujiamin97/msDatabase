@@ -1,5 +1,5 @@
 #查询单个物质信息
-single_t3db <- function(id=c("T3D0001")){
+single_t3db <- function(id=c("T3D0001",sleep_time=c("2")){
   t3dbid <- id
   #pb <- txtProgressBar(0, length(t3dbid), style = 3)
   t3d_info <- lapply(1:length(t3dbid), function(x){
