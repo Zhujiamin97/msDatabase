@@ -1,3 +1,7 @@
+#                    生活不止眼前的苟且,还有吃和远方
+
+
+
 # t3dbms2:Tool for manipulating T3DB databases
 # Installation
 You can install t3dbms2 from Github
