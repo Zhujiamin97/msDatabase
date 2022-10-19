@@ -30,7 +30,6 @@ sleep_time:The time between each acquisition of data
 
 ![image](https://user-images.githubusercontent.com/93595586/196357074-4fee4e08-b667-451f-9cb5-5b90cbc4cc04.png)
 
-
 # warn
 It is best to crawl multiple times, otherwise access will be rejected by the website
 
