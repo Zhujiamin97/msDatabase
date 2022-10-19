@@ -40,7 +40,7 @@ get_t3db <- function(start_page_num=c("1"),end_page_num=c("2"),
   }) %>% do.call(rbind,.)
 
   close(pb)
-  if（dir.exist（“./T3DB”）==假){
+  if（dir.exist（“./T3DB”）==FALSE){
 dir.create（“./T3DB”)
   }
   file.name <- paste0(name,"_t3dID")
