@@ -40,7 +40,9 @@ get_t3db <- function(start_page_num=c("1"),end_page_num=c("2"),
   }) %>% do.call(rbind,.)
 
   close(pb)
-  dir.create("./T3DB")
+  if（dir.exist（“./T3DB”）==假){
+dir.create（“./T3DB”)
+  }
   file.name <- paste0(name,"_t3dID")
   write.csv(t3db_data,"./T3DB/file.name.csv")
   message(paste0("获取",name,"的T3D_id成功，已保存到默认路径"))
