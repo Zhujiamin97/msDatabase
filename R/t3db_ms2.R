@@ -2,7 +2,7 @@
 # end_page_num:The page number you want to end the crawl
 # name:The class of substance, such as "pollutant"
 
-get_t3db <- function(start_page_num=c("1"),end_page_num=c("45"),
+get_t3db <- function(start_page_num=c("1"),end_page_num=c("2"),
                      name=c("pollutant"),sleep_time=c("2")){
   library(tidyverse)
   library(rvest)
