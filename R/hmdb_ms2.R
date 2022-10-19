@@ -71,10 +71,8 @@ hmdb_ms2 <- function(id_file,sleep_time){
         str_ms <- strsplit(index,"\">Download")[[1]][1]
         ms_url <- strsplit(str_ms,"href=\"")[[1]][2]
       })
-      #获取T3BD000001的二级url成功，为ms2_url
+      
       ###################获取Experimental Conditions#############################
-      #把所有有二级数据的T3DB号找出来，最终id号作为媒介与物质信息表进行合并
-      ##数量过大 网站容易拒绝访问
       ms2_info <- lapply(1:length(ms2_num), FUN = function(k){
         
         url_2 <- "http://www.hmdb.ca/spectra/ms_ms/"
