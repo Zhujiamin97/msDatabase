@@ -30,6 +30,11 @@ sleep_time:The time between each acquisition of data
 
 ![image](https://user-images.githubusercontent.com/93595586/196357074-4fee4e08-b667-451f-9cb5-5b90cbc4cc04.png)
 
+# other tools HMDB
+Use the get_hmdb_id(file) function to obtain the HMDBID corresponding to the metabolite in the xml file
+
+Use hmdb_ms2 function to obtain the corresponding spectrum of metabolites
+
 # warn
 It is best to crawl multiple times, otherwise access will be rejected by the website
 
