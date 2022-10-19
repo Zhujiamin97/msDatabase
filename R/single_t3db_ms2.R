@@ -1,10 +1,25 @@
 #查询单个或多个物质信息，通过输入T3Did
 #多个请以c("T3D0001","T3D0002","T3D0003")形式输入
-single_t3db <- function(id=c("T3D0001",sleep_time=c("2"))){
-  #获取二级数据的url
-  t3dbid <- id
+single_t3db <- function(id=c("T3D0001"),sleep_time=c("2")){
+  library(tidyverse)
+  library(rvest)
+  library(curl)
+  library(RCurl)
   #pb <- txtProgressBar(0, length(t3dbid), style = 3)
-t3d_info <- lapply(1:length(t3dbid), function(x){
+  message("正在测试可查询的T3DB_ID网页")
+  t3dbid <- lapply(1:length(id), function(x){
+    url_0 <- "http://www.t3db.ca/toxins/"
+    info_0 <- paste0(id[x],"#spectra")
+    new_url_0 <- paste0(url_0,info_0)
+    if(url.exists(new_url_0)==TRUE){
+      url <- id[x]
+    }
+  }) %>% unlist()
+  message("测试可查询的T3DB_ID网页结束")
+  #获取二级数据的url
+  #t3dbid <- t3db_data$t3dbid
+  #pb <- txtProgressBar(0, length(t3dbid), style = 3)
+  t3d_info <- lapply(1:length(t3dbid), function(x){
     #setTxtProgressBar(pb, x)
     Sys.sleep(sleep_time)
     message(paste0("正在获取T3DB_ID为：",t3dbid[x]," 的二级数据"))
@@ -31,20 +46,20 @@ t3d_info <- lapply(1:length(t3dbid), function(x){
         }else{
           id_num <- id_num
         }
-      })
+      }) %>% unlist()
       ##去除ms2_num中为NA的项
-      if(length(which(ms2_num=="NULL"))>0){
-        ms2_num <- ms2_num[-which(ms2_num=="NULL")]  ##500问题所在 因为网页确实无法打开
-      }else{
-        ms2_num <- ms2_num
-      } 
+      #   if(length(which(ms2_num=="NULL"))>0){
+      #            ms2_num <- ms2_num[-which(ms2_num=="NULL")]  ##500问题所在 因为网页确实无法打开
+      #            }else{
+      #             ms2_num <- ms2_num
+      #        } 
       #获取T3BD000001的二级序列号成功，为ms2_num
       #获取二级碎片的URL
       ms2_url <- lapply(1:length(ms2_num), FUN = function(j){
         #setTxtProgressBar(pb, x)
         #Sys.sleep(3)
         url_2 <- "http://www.t3db.ca/spectra/ms_ms/"
-        num <- ms2_num[[j]]
+        num <- ms2_num[j]#改
         new_url_2 <- paste0(url_2,num)
         #获取HTML网页
         web <- read_html(curl(new_url_2,handle = curl::new_handle("useragent" = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.33")))
@@ -61,7 +76,7 @@ t3d_info <- lapply(1:length(t3dbid), function(x){
       ms2_info <- lapply(1:length(ms2_num), FUN = function(k){
         
         url_2 <- "http://www.t3db.ca/spectra/ms_ms/"
-        num <- ms2_num[[k]]
+        num <- ms2_num[k]#改
         new_url_2 <- paste0(url_2,num)
         #获取HTML网页
         #web <- read_html(new_url_2)
@@ -141,7 +156,10 @@ t3d_info <- lapply(1:length(t3dbid), function(x){
     }
   }) %>% do.call(rbind,.)
   message("全部数据获取完成")
-  write.csv(t3d_info,"./file.name.csv")
-  save(t3d_info,file = "./file.name.Rdata")
+  if(dir.exists("./T3DB")==FALSE){
+    dir.create("./T3DB")
+  }
+  write.csv(t3d_info,"./T3DB/file.name.csv")
+  save(t3d_info,file = "./T3DB/file.name.Rdata")
   t3d_info
 }
