@@ -141,8 +141,8 @@ hmdb_ms2 <- function(id_file,sleep_time){
   }#第一个try函数 判断url是否存在
     
   }) %>% do.call(rbind,.)
-  if(dir.exists(./HMDB)==FALSE){
-    dir.create(./HMDB)
+  if(dir.exists("./HMDB")==FALSE){
+    dir.create("./HMDB")
   }
   write.csv(hmdb_info,"./HMDB/MS2.csv")
   save(hmdb_info,file = "./HMDB/MS2.Rdata")
