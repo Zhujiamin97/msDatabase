@@ -3,15 +3,15 @@
 ![image](https://user-images.githubusercontent.com/93595586/196358703-6e844094-03e0-44db-803a-5e039d6b761c.png)
 
 
-# t3dbms2:Tool for manipulating T3DB databases
+# msdatabase:Tool for manipulating Open source mass spectrometry databases
 # Installation
-You can install t3dbms2 from Github
+You can install msdatabase from Github
 
 if(!require(remotes)){
 install.packages("remotes")
 }
 
-remotes::install_github("Zhujiamin/t3dbms2")
+remotes::install_github("Zhujiamin/msdatabase")
 
 # Usage
 get_t3db(page_num,name,sleep_time)
