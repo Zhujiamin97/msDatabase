@@ -1,7 +1,3 @@
-#                   生活不止眼前的苟且,还有吃和远方
-
-![image](https://user-images.githubusercontent.com/93595586/196358703-6e844094-03e0-44db-803a-5e039d6b761c.png)
-
 
 # msdatabase:Tool for manipulating Open source mass spectrometry databases
 # Installation
