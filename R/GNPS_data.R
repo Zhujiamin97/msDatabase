@@ -2,8 +2,9 @@
 #file <- "F:/桌面/R开发/数据库操作/HMDB.msp"
 gnps_ms2 <- function(file){
   library(tidyverse)
-  message("正在将msp数据转换Rdata格式")
+  message("正在读取msp数据")
   msp.data <- readr::read_lines(file,progress = FALSE)
+  message("读取完成,转换中")
   #show tail data
   #tail(msp.data,100)
   #head(msp.data,100)
