@@ -8,7 +8,7 @@ gnps_ms2 <- function(file){
   #show tail data
   #tail(msp.data,100)
   #head(msp.data,100)
-  #blank_index <- which(msp.data=="")
+  blank_index <- which(msp.data=="")
   #header with whitespace
   msp.data <- unlist(list("",msp.data))
   
