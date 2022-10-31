@@ -1,6 +1,6 @@
-Package: t3dbms2
+Package: msdatabase
 Type: Package
-Title: Obtain substance information in the T3DB database
+Title: Obtain substance information in the database
 Version: 0.1.0
 Author: ZHU
 Maintainer: The package maintainer <yourself@somewhere.net>
