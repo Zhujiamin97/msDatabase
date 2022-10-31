@@ -1,8 +1,8 @@
 
-#file <- "F:/×ÀÃæ/R¿ª·¢/Êý¾Ý¿â²Ù×÷/HMDB.msp"
+#file <- "F:/æ¡Œé¢/Rå¼€å‘/æ•°æ®åº“æ“ä½œ/HMDB.msp"
 gnps_ms2 <- function(file){
   library(tidyverse)
-  message("ÕýÔÚ½«mspÊý¾Ý×ª»»Rdata¸ñÊ½")
+  message("æ­£åœ¨å°†mspæ•°æ®è½¬æ¢Rdataæ ¼å¼")
   msp.data <- readr::read_lines(file,progress = FALSE)
   #show tail data
   #tail(msp.data,100)
@@ -10,19 +10,19 @@ gnps_ms2 <- function(file){
   #blank_index <- which(msp.data=="")
   #header with whitespace
   msp.data <- unlist(list("",msp.data))
-  #0 <- which(msp.data=="")
-  #¼ì²éÒ»ÏÂblankÊÇ·ñÎªÅ¼Êý
+  
+  #æ£€æŸ¥ä¸€ä¸‹blankæ˜¯å¦ä¸ºå¶æ•°
  if(length(blank_index)%%2==!0 ){
-   stop("ÐÅÏ¢È±Ê§")
+   stop("ä¿¡æ¯ç¼ºå¤±")
  }
-  num <- 1:(length(blank_index)/2)##´ú±íÒ»¹²ÓÐ¶àÉÙ¸ö»¯ºÏÎï
+  num <- 1:(length(blank_index)/2)##ä»£è¡¨ä¸€å…±æœ‰å¤šå°‘ä¸ªåŒ–åˆç‰©
   pb <- txtProgressBar(0, length(num), style = 3)
   gnps_ms2 <- lapply(num, function(x){
     setTxtProgressBar(pb, x)
     compound_data <-msp.data[blank_index[-1+2*x]:blank_index[0+2*x]]
     info<- compound_data[grep(": ",compound_data)]
     ms2 <- compound_data[grep("\t",compound_data)]
-    #×Ö·û´®ÌáÈ¡info
+    #å­—ç¬¦ä¸²æå–info
     
     info_all <- lapply(1:length(info), FUN = function(x){
       
@@ -40,7 +40,7 @@ gnps_ms2 <- function(file){
     compound_info <- data.frame(nameE=NAME ,precursor=PRECURSORMZ,
                                 type=PRECURSORTYPE,formula=FORMULA,
                                 ionmode=IONMODE)
-    ##×Ö·û´®ÌáÈ¡ ms2
+    ##å­—ç¬¦ä¸²æå– ms2
     msms <- lapply(1:length(ms2), FUN = function(x){
       j <- strsplit(ms2[x], "\t")
       mz <- sapply(j, "[",1) 
@@ -55,7 +55,7 @@ gnps_ms2 <- function(file){
     dir.create("./GNPS")
   }
   save(gnps_ms2,file = "./GNPS/gnps_ms2.Rdata")
-  message("Êý¾Ý¿â¹¹½¨Íê³É,ÒÑ±£´æÖÁÄ¬ÈÏÂ·¾¶")
+  message("æ•°æ®åº“æž„å»ºå®Œæˆ,å·²ä¿å­˜è‡³é»˜è®¤è·¯å¾„")
   gnps_ms2
 }
 
