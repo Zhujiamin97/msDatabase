@@ -1,6 +1,6 @@
 
 #file <- "F:/HMDB.msp"
-GNPS_ms2 <- function (file){
+gnps_ms2 <- function (file){
   library(tidyverse)
   message("正在读取msp数据")
   msp.data <- readr::read_lines(file, progress = FALSE)
