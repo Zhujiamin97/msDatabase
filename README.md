@@ -7,7 +7,7 @@ if(!require(remotes)){
 install.packages("remotes")
 }
 
-remotes::install_github("Zhujiamin/msdatabase")
+remotes::install_github("Zhujiamin97/msdatabase")
 
 # Usage
 get_t3db(page_num,name,sleep_time)
