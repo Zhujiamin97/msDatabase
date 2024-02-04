@@ -14,7 +14,8 @@ Imports:
     rvest,
     RCurl,
     tidyverse,
-    data.table
+    data.table,
+    RaMS
 Depends: 
     tidyverse
 RoxygenNote: 7.2.1
