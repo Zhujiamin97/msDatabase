@@ -1,3 +1,28 @@
+plot_spec <- function(search.result = NULL,
+                      row_num = c(1)){
+    ms2_spec = search.result$ms2
+    if(length(ms2_spec)==0){
+      message("No MS/MS")
+      return(NA)
+    }
+    if(!is.numeric(row_num)){
+      stop("row_num must be number!")
+    }
+    if(row_num > length(ms2_spec)){
+      message(paste0("The max number of ms/ms is ",length(ms2_spec),"\nreturn row_num = 1"))
+      row_num = 1
+    }
+    ms2_spec = ms2_spec[row_num][[1]]
+    ms2_spec$intensity = ms2_spec$intensity/max(ms2_spec$intensity)*100
+    p <- ggplot(data=ms2_spec,mapping=aes(x=mz,y=intensity))+
+         ylim(0,105)+
+         geom_segment(aes(xend = mz, yend = 0,colour = "red"), linewidth = 1, lineend = "butt")+
+         labs(x = "mz",y = "Relative intensity",title = "Mass spectra of matched fragment ions")+
+         theme_bw(base_size = 20,)+
+         theme(legend.position = "none")
+    return(plotly::ggplotly(p))
+}
+
 
 ms2_matrix_demo <- function(){
   
