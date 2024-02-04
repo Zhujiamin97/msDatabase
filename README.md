@@ -1,5 +1,5 @@
 
-# msdatabase:Tool for manipulating Open source mass spectrometry databases
+# msDatabase:Tool for manipulating Open source mass spectrometry databases
 
 install.packages("devtools")
 
