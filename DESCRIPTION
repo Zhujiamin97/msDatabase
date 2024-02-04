@@ -13,7 +13,8 @@ Imports:
     curl,
     rvest,
     RCurl,
-    tidyverse
+    tidyverse,
+    data.table
 Depends: 
     tidyverse
 RoxygenNote: 7.2.1
