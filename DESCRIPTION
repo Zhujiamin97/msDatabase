@@ -1,4 +1,4 @@
-Package: msdatabase
+Package: msDatabase
 Type: Package
 Title: Obtain substance information in the database
 Version: 0.1.0
