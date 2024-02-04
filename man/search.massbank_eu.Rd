@@ -11,7 +11,7 @@ Tell yourself once a day, "I'm really good."
 }
 \examples{
 search.massbank_eu(compound_name = "Dihydrotestosterone",
-                    formula = NULL,
-                    Instrument_Type = "LC-ESI-QTOF",
-                    ms2_matrix = ms2_matrix_demo())
+                   formula = NULL,
+                   Instrument_Type = "LC-ESI-QTOF",
+                   ms2_matrix = ms2_matrix_demo())
 }
