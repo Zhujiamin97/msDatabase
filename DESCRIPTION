@@ -15,7 +15,8 @@ Imports:
     RCurl,
     tidyverse,
     data.table,
-    RaMS
+    RaMS,
+    plotly
 Depends: 
     tidyverse
 RoxygenNote: 7.2.1
