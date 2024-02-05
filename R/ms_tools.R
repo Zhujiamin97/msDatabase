@@ -1,5 +1,9 @@
 plot_spec <- function(search.result = NULL,
                       row_num = c(1)){
+    if(is.na(search.result)){
+      message("No search result!")
+      return(NA)
+    }
     ms2_spec = search.result$ms2
     if(length(ms2_spec)==0){
       message("No MS/MS")
