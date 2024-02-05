@@ -15,7 +15,7 @@ devtools::install_github("Zhujiamin97/msDatabase", build_vignettes = TRUE)
 library(msDatabase)
 result <- search.massbank_eu(compound_name = "Dihydrotestosterone",
                              formula = NULL,
-                             InChIKey = "QADHLRWLCPCEKT-LOVVWNRFSA-N")
+                             InChIKey = NULL)
 print(result)
 
 # show spec
