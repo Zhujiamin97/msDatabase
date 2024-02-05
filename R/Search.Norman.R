@@ -8,15 +8,13 @@
 #'@param InChIKey
 #'@param Exact_Mass
 #'@param mz_error
-#'@param Instrument_Type
-#'@param plot_ms2_match
+#'@param NormanID
+#'@param CAS
 #'@param ms2_matrix for example use: ms2_matrix_demo()
 #'
 #'@example 
-#' use name seacrh : search.massbank_eu(compound_name = "Dihydrotestosterone",
-#'                                      formula = NULL,
-#'                                      Instrument_Type = "LC-ESI-QTOF",
-#'                                      ms2_matrix = ms2_matrix_demo())
+#' use name seacrh : search.norman(compound_name = "Sulfaclozine",
+#'                                 formula = NULL)
 
 search.norman <- function(compound_name = "Sulfaclozine",
                           NormanID = "NS00000001",
