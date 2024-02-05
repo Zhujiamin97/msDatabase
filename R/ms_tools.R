@@ -1,6 +1,6 @@
 plot_spec <- function(search.result = NULL,
                       row_num = c(1)){
-    if(is.na(search.result)){
+    if(all(is.na(search.result))){
       message("No search result!")
       return(NA)
     }
