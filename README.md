@@ -1,4 +1,4 @@
-# msDatabase <img src="man/figures/hexsticker.png" align="right" alt="semantic.dashboard logo" style="height: 140px;"></a>
+# msDatabase <img src="man/figures/msDatabase.png" align="right" alt="msDatabase logo" style="height: 140px;"></a>
 
 Tool for manipulating Open source mass spectrometry databases
 
