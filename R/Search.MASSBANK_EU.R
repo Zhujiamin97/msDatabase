@@ -2,13 +2,34 @@
 #'
 #'@author JiaMin ZHU
 #'@description
-#' MASSBANK_EU: https://massbank.eu/MassBank/
+#'
 #'@param compound_name 
 #'@param formula
 #'@param InChIKey
+#'@param Ion_Mode  in c("all","P","N")
 #'@param Exact_Mass
 #'@param mz_error
-#'@param Instrument_Type
+#'@param Instrument_Type in c("ESI","EI","others","all")
+#'  
+# Instrument Type:	EI-B ,	EI-EBEB ,	EI-TOF
+#                   GC-EI-BE ,	GC-EI-Q ,	GC-EI-QQ
+#                   GC-EI-TOF ,	CE-ESI-TOF ,	ESI-ITFT
+#                   ESI-ITTOF ,	ESI-QIT ,	ESI-QQ
+#                   ESI-QTOF ,	ESI-TOF ,	LC-ESI-FT
+#                   LC-ESI-IT ,	LC-ESI-ITFT ,	LC-ESI-ITTOF
+#                   LC-ESI-Q ,	LC-ESI-QFT ,	LC-ESI-QIT
+#                   LC-ESI-QQ ,	LC-ESI-QQQ ,	LC-ESI-QTOF
+#                   LC-ESI-TOF ,	APCI-ITFT ,	APCI-ITTOF
+#                   APCI-Q ,	CI-B ,	CI-Q
+#                   FAB-B ,	FAB-BE ,	FAB-EB
+#                   FAB-EBEB ,	FD-B ,	FI-B
+#                   GC-APCI-QTOF ,	GC-CI-TOF ,	GC-FI-TOF
+#                   LC-APCI-ITFT ,	LC-APCI-Q ,	LC-APCI-QFT
+#                   LC-APCI-QTOF ,	LC-APPI-QQ ,	MALDI-QIT
+#                   MALDI-QITTOF ,	MALDI-TOF ,	MALDI-TOFTOF
+#                   SI-BE
+#'@param ms2.mz.tol
+#'@param mz.tol.type.ms2 in c("Da","ppm") 
 #'@param plot_ms2_match
 #'@param ms2_matrix for example use: ms2_matrix_demo()
 #'
@@ -23,7 +44,7 @@ search.massbank_eu <- function(compound_name = "Dihydrotestosterone",
                                InChIKey = NULL,
                                Exact_Mass = NULL,
                                mz_error = 0.3,
-                               Ion_Mode = c("all","P","N"),
+                               Ion_Mode = "all",
                                MS_Type = "MS2",
                                Instrument_Type = "ESI",
                                ms2.mz.tol = 0.02,
@@ -42,7 +63,17 @@ search.massbank_eu <- function(compound_name = "Dihydrotestosterone",
   }else if(Ion_Mode=="N"){
     ion = -1
   }
-  
+  # Instrument_Type
+  if(Instrument_Type == "ESI"){
+    Instrument_Type = "&inst_grp=ESI&inst=CE-ESI-TOF&inst=ESI-ITFT&inst=ESI-ITTOF&inst=ESI-QIT&inst=ESI-QQ&inst=ESI-QTOF&inst=ESI-TOF&inst=LC-ESI-FT&inst=LC-ESI-IT&inst=LC-ESI-ITFT&inst=LC-ESI-ITTOF&inst=LC-ESI-Q&inst=LC-ESI-QFT&inst=LC-ESI-QIT&inst=LC-ESI-QQ&inst=LC-ESI-QQQ&inst=LC-ESI-QTOF&inst=LC-ESI-TOF"
+  }else if(Instrument_Type == "EI"){
+    Instrument_Type = "&inst_grp=EI&inst=EI-B&inst=EI-EBEB&inst=EI-TOF&inst=GC-EI-BE&inst=GC-EI-Q&inst=GC-EI-QQ&inst=GC-EI-TOF&ms=MS2&ion=0"
+  }else if(Instrument_Type == "others"){
+    Instrument_Type = "&inst_grp=Others&inst=APCI-ITFT&inst=APCI-ITTOF&inst=APCI-Q&inst=CI-B&inst=CI-Q&inst=FAB-B&inst=FAB-BE&inst=FAB-EB&inst=FAB-EBEB&inst=FD-B&inst=FI-B&inst=GC-APCI-QTOF&inst=GC-CI-TOF&inst=GC-FI-TOF&inst=LC-APCI-ITFT&inst=LC-APCI-Q&inst=LC-APCI-QFT&inst=LC-APCI-QTOF&inst=LC-APPI-QQ&inst=MALDI-QIT&inst=MALDI-QITTOF&inst=MALDI-TOF&inst=MALDI-TOFTOF&inst=SI-BE"
+  }else if(Instrument_Type == "all"){
+    Instrument_Type = "&inst_grp=EI&inst=EI-B&inst=EI-EBEB&inst=EI-TOF&inst=GC-EI-BE&inst=GC-EI-Q&inst=GC-EI-QQ&inst=GC-EI-TOF&inst_grp=ESI&inst=CE-ESI-TOF&inst=ESI-ITFT&inst=ESI-ITTOF&inst=ESI-QIT&inst=ESI-QQ&inst=ESI-QTOF&inst=ESI-TOF&inst=LC-ESI-FT&inst=LC-ESI-IT&inst=LC-ESI-ITFT&inst=LC-ESI-ITTOF&inst=LC-ESI-Q&inst=LC-ESI-QFT&inst=LC-ESI-QIT&inst=LC-ESI-QQ&inst=LC-ESI-QQQ&inst=LC-ESI-QTOF&inst=LC-ESI-TOF&inst_grp=Others&inst=APCI-ITFT&inst=APCI-ITTOF&inst=APCI-Q&inst=CI-B&inst=CI-Q&inst=FAB-B&inst=FAB-BE&inst=FAB-EB&inst=FAB-EBEB&inst=FD-B&inst=FI-B&inst=GC-APCI-QTOF&inst=GC-CI-TOF&inst=GC-FI-TOF&inst=LC-APCI-ITFT&inst=LC-APCI-Q&inst=LC-APCI-QFT&inst=LC-APCI-QTOF&inst=LC-APPI-QQ&inst=MALDI-QIT&inst=MALDI-QITTOF&inst=MALDI-TOF&inst=MALDI-TOFTOF&inst=SI-BE"
+  }
+
   if(is.null(InChIKey)){
     # 将空白替换为+号以满足url搜索需求
     compound_name = gsub("\\s", "+", compound_name)
@@ -52,14 +83,15 @@ search.massbank_eu <- function(compound_name = "Dihydrotestosterone",
                  "&mz=",Exact_Mass,
                  "&tol=",mz_error,
                  "&op1=and&op2=and&type=quick&searchType=keyword&sortKey=not&sortAction=1&pageNo=1&exec=",
-                 "&inst_grp=ESI&inst=CE-ESI-TOF&inst=ESI-ITFT&inst=ESI-ITTOF&inst=ESI-QIT&inst=ESI-QQ&inst=ESI-QTOF&inst=ESI-TOF&inst=LC-ESI-FT&inst=LC-ESI-IT&inst=LC-ESI-ITFT&inst=LC-ESI-ITTOF&inst=LC-ESI-Q&inst=LC-ESI-QFT&inst=LC-ESI-QIT&inst=LC-ESI-QQ&inst=LC-ESI-QQQ&inst=LC-ESI-QTOF&inst=LC-ESI-TOF",
+                 Instrument_Type,
                  "&ms=",MS_Type,
                  "&ion=",ion)
   }else{
     # search by InChIKey
     url = paste0("https://massbank.eu/MassBank/Result.jsp?inchikey=",InChIKey,
                  "&type=inchikey&searchType=inchikey",
-                 "&op1=and&op2=and&sortKey=not&sortAction=1&pageNo=1&exec=&inst_grp=ESI&inst=CE-ESI-TOF&inst=ESI-ITFT&inst=ESI-ITTOF&inst=ESI-QIT&inst=ESI-QQ&inst=ESI-QTOF&inst=ESI-TOF&inst=LC-ESI-FT&inst=LC-ESI-IT&inst=LC-ESI-ITFT&inst=LC-ESI-ITTOF&inst=LC-ESI-Q&inst=LC-ESI-QFT&inst=LC-ESI-QIT&inst=LC-ESI-QQ&inst=LC-ESI-QQQ&inst=LC-ESI-QTOF&inst=LC-ESI-TOF",
+                 "&op1=and&op2=and&sortKey=not&sortAction=1&pageNo=1&exec=",
+                 Instrument_Type,
                  "&ms=",MS_Type,
                  "&ion=",ion)
   }
