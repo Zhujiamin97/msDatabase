@@ -121,7 +121,7 @@ search.pubchem <- function(compound_name = NULL,
     cids = c(paste0(cids, collapse = ","))
   }
   
-  #--------------finish get cids ,then get information------------------------##
+  #--------------After getting the cids ,then start getting the compound information------------------------##
   
   prolog <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug"
   
