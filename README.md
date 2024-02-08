@@ -26,6 +26,6 @@ plot_spec(search.result = result,
 ## [PubChem](https://pubchem.ncbi.nlm.nih.gov/)
 ``` r
 library(msDatabase)
-result <- search.pubchem(cids = c(1,2,3)
+result <- search.pubchem(cids = c(1,2,3))
 print(result)
 ```
