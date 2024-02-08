@@ -34,23 +34,35 @@ search.norman <- function(compound_name = "Sulfaclozine",
   # first
   if(!is.null(CAS)){
     dat = Norman_SusDat %>% filter(CAS_RN_Dashboard == CAS)
+    rm(Norman_SusDat)
+    gc()
     return(as.list(dat))
   }else if(!is.null(NormanID)){
     dat = Norman_SusDat %>% filter(Norman_SusDat_ID == NormanID)
+    rm(Norman_SusDat)
+    gc()
     return(as.list(dat))
   }else if(!is.null(CID)){
     dat = Norman_SusDat %>% filter(PubChem_CID == CID)
+    rm(Norman_SusDat)
+    gc()
     return(as.list(dat))
   }else if(!is.null(InChIKey)){
     dat = Norman_SusDat %>% filter(StdInChIKey == InChIKey)
+    rm(Norman_SusDat)
+    gc()
     return(as.list(dat))
   }else if(!is.null(formula)){
     dat = Norman_SusDat %>% filter(Molecular_Formula == formula)
+    rm(Norman_SusDat)
+    gc()
     return(as.list(dat))
   }else if(!is.null(Exact_Mass)){
     if(is.numeric(Exact_Mass)&is.numeric(mz_error)){
       dat = Norman_SusDat[which(as.numeric(Norman_SusDat$Monoiso_Mass) 
                                 %between% c(Exact_Mass-mz_error,Exact_Mass+mz_error)),]
+      rm(Norman_SusDat)
+      gc()
       return(as.list(dat))
     }else{
       stop("Exact_Mass & mz_error must be number")
