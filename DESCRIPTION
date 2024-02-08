@@ -16,7 +16,9 @@ Imports:
     tidyverse,
     data.table,
     RaMS,
-    plotly
+    plotly,
+    jsonlite,
+    httr
 Depends: 
     tidyverse
 RoxygenNote: 7.2.1
