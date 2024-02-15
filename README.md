@@ -22,6 +22,12 @@ print(result)
 # show spec
 plot_spec(search.result = result,
           row_num = 2)
+
+# match ms2
+result <- search.massbank_eu(compound_name = "Dihydrotestosterone",
+                             ms2_matrix = ms2_matrix_demo())
+# get dp score
+print(result$dp.score)
 ```
 ## [HMDB](https://hmdb.ca/)
 ``` r
