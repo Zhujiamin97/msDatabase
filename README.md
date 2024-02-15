@@ -23,6 +23,27 @@ print(result)
 plot_spec(search.result = result,
           row_num = 2)
 ```
+## [HMDB](https://hmdb.ca/)
+``` r
+library(msDatabase)
+result <- search.hmdb(HMDB_ID = "HMDB0000001")
+print(result)
+
+# show spec
+plot_spec(search.result = result,
+          row_num = 2)
+```
+## [T3DB](http://www.t3db.ca/)
+``` r
+library(msDatabase)
+result <- search.t3db(T3DB_ID = "T3D3216")
+print(result)
+
+# show spec
+plot_spec(search.result = result,
+          row_num = 2)
+```
+
 ## [PubChem](https://pubchem.ncbi.nlm.nih.gov/)
 ``` r
 library(msDatabase)
