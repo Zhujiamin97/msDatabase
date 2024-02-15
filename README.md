@@ -22,7 +22,7 @@ print(result)
 
 # search by exact mass
 result <- search.massbank_eu(compound_name = NULL,
-                             Exact_Mass = 100,
+                             Exact_Mass = 101,
                              mz_error = 0.05)
 print(result)
 
