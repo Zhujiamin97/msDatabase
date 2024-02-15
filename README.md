@@ -14,9 +14,16 @@ devtools::install_github("Zhujiamin97/msDatabase", build_vignettes = TRUE)
 ## [MASSBANK_EU](https://massbank.eu/MassBank/Search)
 ``` r
 library(msDatabase)
+# search by compound name
 result <- search.massbank_eu(compound_name = "Dihydrotestosterone",
                              formula = NULL,
                              InChIKey = NULL)
+print(result)
+
+# search by exact mass
+result <- search.massbank_eu(compound_name = NULL,
+                             Exact_Mass = 100,
+                             mz_error = 0.05)
 print(result)
 
 # show spec
