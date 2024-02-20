@@ -1,3 +1,61 @@
+plot_match_spec <- function(search.result = NULL,
+                            row_num = c(1),
+                            ggplotly = FALSE,
+                            shiny = FALSE){
+  options(warn = -1)
+  library(RColorBrewer)
+  library(ggrepel)
+  if(is.null(search.result$match_matrix)){
+    message("No Match!!")
+    return(NA)
+  }
+  if(row_num > length(search.result$match_matrix)){
+    message(paste0("The max number of ms/ms is ",length(search.result$match_matrix),"\nreturn row_num = 1"))
+    row_num = 1
+  }
+  match_matrix <- search.result$match_matrix[row_num][[1]]
+  if(nrow(match_matrix)==0){
+    message("No Match!!")
+    return(NA)
+  }
+  lib.spec = match_matrix %>% filter(int.lib!=0)
+  lib.spec = data.frame(mz=lib.spec$mz.lib,
+                        int=lib.spec$int.lib,
+                        lab=rep("lib.spec",nrow(lib.spec)))
+  exp.spec = match_matrix %>% filter(int.exp!=0)
+  exp.spec = data.frame(mz=exp.spec$mz.exp,
+                        int=-exp.spec$int.exp, # 负值 放到对面
+                        lab=rep("exp.spec",nrow(exp.spec)))
+  spec.table = rbind(lib.spec, exp.spec)
+  match.num = sum(match_matrix$int.exp!=0 & match_matrix$int.lib!=0)
+  MFR = paste0(match.num,"/",nrow(lib.spec))
+  if(nrow(spec.table)>0){
+    p <- ggplot(data=spec.table,mapping=aes(x=mz,y=int))+
+      # ylim(-105,105)+
+      geom_hline(yintercept = 0, color = "black", linewidth = 0.5) + # add y=0
+      # geom_point(aes(color = lab), size = 1) +
+      geom_segment(aes(xend = mz, yend = 0,colour = lab), linewidth = 1.2, lineend = "butt")+
+      # geom_bar(aes(fill = lab), stat="identity", width=0.15)+
+      labs(x = "mz",y = "Relative intensity",title = "Mass spectra of matched fragment ions")+
+      theme_bw(base_size = 20,)+
+      # geom_ribbon(aes(ymin=0, ymax=int), fill="gray")+ 填充
+      theme(legend.position = "none")+
+      # scale_y_continuous(limits = c(-105,105),breaks = seq(-105,105,50),labels = c(100,50,0,50,100))+
+      scale_color_manual(values = c("#E41A1C","#377EB8"))+
+      geom_text_repel(aes(label = round(mz,4), vjust = -0.5, hjust = 0.5), show.legend = TRUE)+
+      annotate("text",x= max(spec.table$mz)-5,y= -104,label="Experimental",colour="#E41A1C",size = 8)+
+      annotate("text",x= max(spec.table$mz)-5,y= 104,label="Reference",colour="#377EB8",size = 8)+
+      annotate("text",x= min(spec.table$mz)+5,y= 104,label=paste0("MFR:",MFR),colour="#377EB8",size = 8)
+
+    p
+    
+  }
+  if(ggplotly){
+    return(plotly::ggplotly(p))
+  }
+  return(p)
+}
+
 plot_spec <- function(search.result = NULL,
                       row_num = c(1)){
     if(all(is.na(search.result))){
