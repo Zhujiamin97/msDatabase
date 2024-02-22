@@ -68,6 +68,22 @@ search.pubchem <- function(compound_name = NULL,
     }else{
       return(NA)
     }
+  }else if(!is.null(formula)){
+    # search by formula
+    url_formula <- paste0("https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastformula/",
+                          formula,"/cids/JSON")
+    response <- try(httr::GET(url_formula))
+    
+    if (response$status_code == 200) {
+      
+      json_data <- content(response, as = "text",encoding = "UTF-8")  
+      parsed_data <- jsonlite::fromJSON(json_data)
+      cids = parsed_data$IdentifierList$CID
+      cids = c(paste0(cids, collapse = ","))
+      
+    }else{  
+      return(NA)
+    }
   }else if(!is.null(InChIKey)){
     # search by InChIKey
     url_inchikey <- paste0("https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/",
