@@ -112,7 +112,7 @@ search.hmdb <-function(HMDB_ID = "HMDB0000001",
     }
     componud_info <- html_document %>% rvest::html_table()
     componud_info <- rbind(componud_info[[1]], componud_info[[2]])
-    ms1_info <- matrix(data = componud_info$X2 ,nrow = 1,ncol = 11) %>% as.data.frame()
+    ms1_info <- matrix(data = componud_info$X2 ,nrow = 1,ncol = nrow(componud_info)) %>% as.data.frame()
     colnames(ms1_info) <- lapply(componud_info$X1,function(x){
       name_str <- strsplit(x,":")[[1]][1]
       gsub(" ","_",name_str)
