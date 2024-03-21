@@ -118,6 +118,7 @@ search.pubchem <- function(compound_name = NULL,
     }
   }else if(!is.null(compound_name)){
     # search by name
+    compound_name <- gsub(" ", "%20", compound_name)
     url_name <- paste0("https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/",
                        compound_name,"/cids/JSON")
     response <- try(httr::GET(url_name))
