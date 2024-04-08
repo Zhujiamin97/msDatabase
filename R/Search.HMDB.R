@@ -111,7 +111,13 @@ search.hmdb <-function(HMDB_ID = "HMDB0000001",
       # return(NULL)
     }
     componud_info <- html_document %>% rvest::html_table()
-    componud_info <- rbind(componud_info[[1]], componud_info[[2]])
+    # 这里会出现txt文件模块，有3列，导致无法合并，故指定取1，2列
+    # 或者检测一下，第二模块的列名，如果是download则不合并
+    if("Download" %in% colnames(componud_info[[2]])){
+      componud_info <- componud_info[[1]]
+    }else{
+      componud_info <- rbind(componud_info[[1]], componud_info[[2]])
+    }
     ms1_info <- matrix(data = componud_info$X2 ,nrow = 1,ncol = nrow(componud_info)) %>% as.data.frame()
     colnames(ms1_info) <- lapply(componud_info$X1,function(x){
       name_str <- strsplit(x,":")[[1]][1]
