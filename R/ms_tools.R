@@ -254,6 +254,9 @@ Homologue_screening <- function(filepath,
   } else if (grepl("\\.csv$",filepath)) {  
     feature_list <- data.table::fread(filepath)
   }
+  
+  df <- cbind.data.frame(homologue_mass,mzdiff_ppm)
+  
   # 遍历设定的质量
   Results <- lapply(1:nrow(df), function(i){
     
@@ -262,8 +265,6 @@ Homologue_screening <- function(filepath,
                       label = 0) %>% as.data.frame()
     
     mz_rt_df <- mz_rt_df[order(mz_rt_df$mz), ]
-    
-    df <- cbind.data.frame(homologue_mass,mzdiff_ppm)
 
     single_mass <- df$homologue_mass[i]
     mz_tol_ppm <-  df$mzdiff_ppm[i]
@@ -271,7 +272,7 @@ Homologue_screening <- function(filepath,
     print(paste0("searching...",single_mass,
                  ";mass_tol_ppm:",mz_tol_ppm))
     
-    mz_rt_df$label = 0
+    # mz_rt_df$label = 0
     
     homologues_df <- data.frame()
     
@@ -355,4 +356,5 @@ Homologue_screening <- function(filepath,
   message("DONE!")
   return(Results)
 }
+
 
