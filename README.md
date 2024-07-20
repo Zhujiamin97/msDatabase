@@ -65,3 +65,14 @@ library(msDatabase)
 result <- search.pubchem(cids = c(1,2,3))
 print(result)
 ```
+
+## [Homologue_screening]
+``` r
+library(msDatabase)
+filepath <- "E:/Desktop/PFAS-Compound.xlsx"
+Results <- Homologue_screening(filepath = filepath,
+                               mzdiff_ppm = c(20,15,10),
+                               homologue_mass = c(49.99681,65.99172,99.99361),
+                               fold = 10)
+print(Results)
+```
