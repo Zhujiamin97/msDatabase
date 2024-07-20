@@ -247,7 +247,8 @@ getDP <- function (exp.int, lib.int){
 Homologue_screening <- function(filepath,
                                 mzdiff_ppm = c(20,15,10),
                                 homologue_mass = c(49.99681,65.99172,99.99361),
-                                fold = 10){
+                                fold = 10,
+                                only_homologue = TRUE){
   
   if (grepl("\\.xlsx$",filepath)) {  
     feature_list <- readxl::read_excel(filepath)
@@ -280,7 +281,7 @@ Homologue_screening <- function(filepath,
     
     while (nrow(mz_rt_df)>0) {
       
-      print(nrow(mz_rt_df))
+      # print(nrow(mz_rt_df))
       # 取mz_rt_df没有被标记为特征的行,即为na
       mz_rt_df = mz_rt_df %>% filter(label == 0)
       if(nrow(mz_rt_df)==0){
@@ -353,8 +354,14 @@ Homologue_screening <- function(filepath,
     
   }) %>% do.call(rbind,.)
   # 合并3种类型的同系物结果
+  if(only_homologue){
+    counts <- table(Results$label)
+    label_idx <- names(counts[counts > 1]) 
+    Results <- Results[Results$label %in% label_idx,]
+  }
   message("DONE!")
   return(Results)
 }
+
 
 
