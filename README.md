@@ -75,4 +75,6 @@ Results <- Homologue_screening(filepath = filepath,
                                homologue_mass = c(49.99681,65.99172,99.99361),
                                fold = 10)
 view(Results)
+# save
+write.csv(Results,paste0(filepath,"-Results.csv"))
 ```
