@@ -257,8 +257,8 @@ Homologue_screening <- function(filepath,
   # 遍历设定的质量
   Results <- lapply(1:nrow(df), function(i){
     
-    mz_rt_df <- cbind(mz = feature_list$mz,
-                      rt = feature_list$rt,
+    mz_rt_df <- cbind(mz = feature_list$`m/z`,
+                      rt = feature_list$`RT [min]`,
                       label = 0) %>% as.data.frame()
     
     mz_rt_df <- mz_rt_df[order(mz_rt_df$mz), ]
