@@ -73,7 +73,8 @@ filepath <- file.choose()
 Results <- Homologue_screening(filepath = filepath,
                                mzdiff_ppm = c(20,15,10),
                                homologue_mass = c(49.99681,65.99172,99.99361),
-                               fold = 10)
+                               fold = 10,
+                               only_homologue = TRUE)
 view(Results)
 # save
 write.csv(Results,paste0(filepath,"-Results.csv"))
