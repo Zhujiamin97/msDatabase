@@ -227,3 +227,132 @@ getDP <- function (exp.int, lib.int){
   y <- lib.weight * lib.int
   return(sum(x * y)^2/(sum(x^2) * sum(y^2)))
 }
+
+#'@title Homologue_screening
+#'@author Jiamin Zhu
+#'@description
+#'A short description...
+#'
+
+# Open JSON file, find exported file, read into table
+# library(rjson)
+# 
+# filepath <- "E:/Desktop/PFAS-Compound.xlsx"
+# 
+# Results <- Homologue_screening(filepath = "E:/Desktop/PFAS-Compound.xlsx",
+#                                mzdiff_ppm = c(20,15,10),
+#                                homologue_mass = c(49.99681,65.99172,99.99361),
+#                                fold = 10)
+
+Homologue_screening <- function(filepath,
+                                mzdiff_ppm = c(20,15,10),
+                                homologue_mass = c(49.99681,65.99172,99.99361),
+                                fold = 10){
+  
+  if (grepl("\\.xlsx$",filepath)) {  
+    feature_list <- readxl::read_excel(filepath)
+  } else if (grepl("\\.csv$",filepath)) {  
+    feature_list <- data.table::fread(filepath)
+  }
+  # 遍历设定的质量
+  Results <- lapply(1:nrow(df), function(i){
+    
+    mz_rt_df <- cbind(mz = feature_list$mz,
+                      rt = feature_list$rt,
+                      label = 0) %>% as.data.frame()
+    
+    mz_rt_df <- mz_rt_df[order(mz_rt_df$mz), ]
+    
+    df <- cbind.data.frame(homologue_mass,mzdiff_ppm)
+
+    single_mass <- df$homologue_mass[i]
+    mz_tol_ppm <-  df$mzdiff_ppm[i]
+    
+    print(paste0("searching...",single_mass,
+                 ";mass_tol_ppm:",mz_tol_ppm))
+    
+    mz_rt_df$label = 0
+    
+    homologues_df <- data.frame()
+    
+    labelNum = 1
+    
+    while (nrow(mz_rt_df)>0) {
+      
+      print(nrow(mz_rt_df))
+      # 取mz_rt_df没有被标记为特征的行,即为na
+      mz_rt_df = mz_rt_df %>% filter(label == 0)
+      if(nrow(mz_rt_df)==0){
+        break
+      }
+      if(nrow(mz_rt_df)==1){
+        mz_rt_df$label = labelNum+1
+        homologues_df <- rbind(homologues_df,mz_rt_df)
+        break
+      }
+      #----------start----------#
+      # 将没有被标记的提取出来，再以第一行作为第一个特征进行查找
+      feature_n = mz_rt_df[1,]
+      
+      feature_n$label = labelNum
+      
+      mz_rt_df[1,] = feature_n
+      
+      homologues_df <- rbind(homologues_df,feature_n)
+      
+      newTable = homologues_df %>% filter(label == labelNum)
+      
+      # 提取最新加入的特征
+      mz.0 <- newTable$mz[length(newTable$mz)]
+      rt.0 <- newTable$rt[length(newTable$rt)]
+      
+      for (k in 2:nrow(mz_rt_df)) {
+        
+        feature_n_add = mz_rt_df[k,]
+        mz.1 = feature_n_add$mz
+        rt.1 = feature_n_add$rt
+        
+        mz.diff <- abs(mz.1-mz.0)
+        rt.diff <- rt.1 - rt.0
+        
+        # 质量误差，49，65，99 的n倍数
+        
+        for (n in 1:fold) {
+          
+          mz.error.homologue <- mz_tol_ppm*10^(-6)*n*single_mass  # 99.99361
+          mz_range <- n*single_mass + c(-mz.error.homologue, +mz.error.homologue)
+          
+          idx <- which(mz.diff>=mz_range[1] & mz.diff<=mz_range[2]) 
+          
+          if(length(idx)>0 & rt.diff > 0){
+            
+            feature_n_add$label <- labelNum
+            homologues_df <- rbind(homologues_df,feature_n_add)
+            # 同时 mz_rt_df中的标签也需要更改为对应的
+            mz_rt_df[k,] <- feature_n_add
+            
+            newTable = homologues_df %>% filter(label == labelNum)
+            
+            # 提取最新加入的特征
+            mz.0 <- newTable$mz[length(newTable$mz)]
+            rt.0 <- newTable$rt[length(newTable$rt)]
+            
+          }
+          break
+        }
+        
+      }
+      # 第n论搜索结束
+      labelNum = labelNum + 1
+    }
+    # 为label标签添加上类别
+    homologues_df$label <- paste0(round(single_mass),"_",homologues_df$label)
+    
+    homologues_df
+    
+  }) %>% do.call(rbind,.)
+  # 合并3种类型的同系物结果
+  message("DONE!")
+  return(Results)
+}
+
