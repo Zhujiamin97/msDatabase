@@ -363,5 +363,99 @@ Homologue_screening <- function(filepath,
   return(Results)
 }
 
+#'@title construct Database
+#
+#'@std_info a table : name|mz|RT other informations
+#'
+#'@description
+#'
+library(doParallel)
+library(doSNOW)
+library(progress)
+library(data.table)
+
+# file_path <- "E:/Desktop/DJ-sample/ms1ms2"
+
+construct_DB <- function(file_path,
+                         # polarity = positive,
+                         ms1.ms2.mz.tol = 10,
+                         mz.tol.type = "ppm",
+                         ms1.ms2.rt.tol = 6,
+                         ms2_int_thr = 1,
+                         cores = 3){
+  # check std information table colnames
+  std_table_path <- list.files(file_path,pattern = ".xlsx|.csv",full.names = TRUE)
+  if(length(std_table_path)!=1){
+    stop("number of .xlsx|.csv table ！= 1")
+  }
+  if (grepl("\\.xlsx$",std_table_path)) {  
+    ms1_table <- openxlsx::read.xlsx(std_table_path)
+  } else if (grepl("\\.csv$",std_table_path)) {  
+    ms1_table <- data.table::fread(std_table_path)
+  }
+  if(all(c("Name","PrecursorMZ","RT") %in% colnames(ms1_table))==FALSE){
+    stop("Please check your table colnames!")
+  }
+  # 去除RT为空的行
+  if(any((is.na(ms1_table$RT)))){
+    ms1_table <- ms1_table[-which(is.na(ms1_table$RT)),]
+  }
+  # 保留时间转换为秒表示
+  if(max(ms1_table$RT) < 60){
+    ms1_table$RT = ms1_table$RT*60
+  }
+  # read ms2
+  ms2_dda <- list.files(file_path,pattern = ".mzML|.mzXML",full.names = TRUE)
+  cl <- makeSOCKcluster(1)
+  registerDoSNOW(cl)
+  # progress bar ------------------------------------------------------------
+  iterations.2 <- length(ms2_dda)
+  pb <- progress_bar$new(
+    format = ":letter [:bar] :elapsed | Remaining time: :eta <br>",
+    total = iterations.2,
+    width = 120)
+  # allowing progress bar to be used in foreach -----------------------------
+  progress <- function(n){
+    pb$tick(tokens = list(letter = "Reading ms2 files."))
+  }
+  opts.2 <- list(progress = progress)
+  ## Read mzXML files
+  ms2_matrix <- foreach(i= 1:length(ms2_dda), 
+                        .options.snow = opts.2, 
+                        .packages = "tidyverse",
+                        .export = c("extract_ms2"),
+                        .combine='rbind') %dopar% extract_ms2(ms2_dda[i],
+                                                              ms2_int_thr = ms2_int_thr)
+  stopImplicitCluster()
+  # progress bar ------------------------------------------------------------
+  cl <- makeSOCKcluster(cores)
+  registerDoSNOW(cl)
+  iterations <- nrow(ms1_table)
+  pb <- progress_bar$new(
+    format = ":letter [:bar] :elapsed | Remaining time: :eta <br>",
+    total = iterations,
+    width = 120)
+  # allowing progress bar to be used in foreach -----------------------------
+  progress <- function(n){
+    pb$tick(tokens = list(letter = "Matching ms1.ms2."))
+  }
+  opts <- list(progress = progress)
+  # match ms1 with ms2
+  database_matrix <- foreach(i=1:nrow(ms1_table), 
+                             .options.snow = opts, 
+                             .packages = c("tidyverse","data.table"),
+                             .export = c("ms1_ms2_match"),
+                             .combine='rbind') %dopar% ms1_ms2_match(ms1_table = ms1_table[i,],
+                                                                     ms1.ms2.mz.tol = ms1.ms2.mz.tol ,
+                                                                     ms1.ms2.rt.tol = ms1.ms2.rt.tol,
+                                                                     mz.tol.type = mz.tol.type,
+                                                                     ms2_matrix = ms2_matrix,
+                                                                     rm.No.ms2.feature = FALSE)
+  stopImplicitCluster()
+  save(database_matrix,file = paste0(file_path,"/database.RData"))
+  message(paste0("File was saved in :",file_path))
+  message("DONE!")
+  return(database_matrix)
+}
 
 
