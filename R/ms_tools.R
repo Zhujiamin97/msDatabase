@@ -369,11 +369,10 @@ Homologue_screening <- function(filepath,
 #'
 #'@description
 #'
-library(doParallel)
-library(doSNOW)
-library(progress)
-library(data.table)
-
+#library(doParallel)
+#library(doSNOW)
+#library(progress)
+#library(data.table)
 # file_path <- "E:/Desktop/DJ-sample/ms1ms2"
 
 construct_DB <- function(file_path,
@@ -383,6 +382,7 @@ construct_DB <- function(file_path,
                          ms1.ms2.rt.tol = 6,
                          ms2_int_thr = 1,
                          cores = 3){
+  message("Reading std information table...")
   # check std information table colnames
   std_table_path <- list.files(file_path,pattern = ".xlsx|.csv",full.names = TRUE)
   if(length(std_table_path)!=1){
@@ -404,6 +404,7 @@ construct_DB <- function(file_path,
   if(max(ms1_table$RT) < 60){
     ms1_table$RT = ms1_table$RT*60
   }
+  message("Reading std ms2 rawdata...")
   # read ms2
   ms2_dda <- list.files(file_path,pattern = ".mzML|.mzXML",full.names = TRUE)
   cl <- makeSOCKcluster(1)
