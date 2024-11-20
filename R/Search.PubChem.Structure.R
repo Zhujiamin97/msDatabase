@@ -55,7 +55,7 @@ Search.PubChem.Structure <- function(cids = 2244,
       
       
     }else{
-      similarity_compounds_3d <- NULL
+      similarity_compounds_2d <- NULL
       message("Number of compouds: 0")
     }
     
