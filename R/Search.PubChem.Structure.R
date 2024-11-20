@@ -88,7 +88,7 @@ Search.PubChem.Structure <- function(cids = 2244,
     }
     t <- rbind(similarity_compounds_2d,similarity_compounds_3d)
     
-    if(nrow(t)>0){
+    if(!is.null(t)){
   
       t$query.id = cids
       
