@@ -4,7 +4,7 @@
 #'@description 2024/11/19
 #'
 
-Search.PubChem.Structure <- function(cids = 2244,
+Search.PubChem.Structure <- function(cids = 6634,
                                      similarity = c("2d","3d"),
                                      Threshold = 99){
   
@@ -17,7 +17,7 @@ Search.PubChem.Structure <- function(cids = 2244,
     
     url <- paste0(url0,
                   cids,
-                  "/property/MolecularWeight,MolecularFormula,RotatableBondCount/JSON?",
+                  "/property/InChIKey,MolecularWeight,MolecularFormula,RotatableBondCount/JSON?",
                   "Threshold=",Threshold)
     
   }else if(all(similarity == "3d")){
@@ -27,7 +27,7 @@ Search.PubChem.Structure <- function(cids = 2244,
     
     url <- paste0(url0,
                   cids,
-                  "/property/MolecularWeight,MolecularFormula,RotatableBondCount/JSON?",
+                  "/property/InChIKey,MolecularWeight,MolecularFormula,RotatableBondCount/JSON?",
                   "Threshold=",Threshold)
     
   }else if(similarity == "2d&3d"){
@@ -38,7 +38,7 @@ Search.PubChem.Structure <- function(cids = 2244,
     
     url <- paste0(url0,
                   cids,
-                  "/property/MolecularWeight,MolecularFormula,RotatableBondCount/JSON?",
+                  "/property/InChIKey,MolecularWeight,MolecularFormula,RotatableBondCount/JSON?",
                   "Threshold=",Threshold)
     
     response <- try(httr::GET(url))
@@ -66,7 +66,7 @@ Search.PubChem.Structure <- function(cids = 2244,
     
     url <- paste0(url0,
                   cids,
-                  "/property/MolecularWeight,MolecularFormula,RotatableBondCount/JSON?",
+                  "/property/InChIKey,MolecularWeight,MolecularFormula,RotatableBondCount/JSON?",
                   "Threshold=",Threshold)
     
     response <- try(httr::GET(url))
